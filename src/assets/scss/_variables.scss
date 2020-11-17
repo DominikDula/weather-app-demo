@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500&display=swap');
+
+$bg-main : #FFFFFF;
+$bg-search : #F3F3F3;
+$bg-city : rgba(13, 159, 234, 0.08);
+
+$color-dark : #000000;
+$color-medium : #444444;
+$color-light : #666666;
+$color-very-light : #999999;
+$color-city : #0DA0EA;
+
+
+
+@function rem($size, $context: 16) {
+	@return ($size / $context) + rem;
+}
+
+@function em($size, $context: 16) {
+	@return ($size / $context) + em;
+}
