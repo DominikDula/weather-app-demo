@@ -2,8 +2,8 @@
     <main class="container">
         <div class="bg"></div>
         <div class="content">
-            <city-info/>
-            <weather-info/>
+            <city-info @city="ChangeCity" :info="dayinfo"/>
+            <weather-info :daily="results"/>
             <next-days/>
         </div>
     </main>
@@ -17,6 +17,10 @@ import NextDays from "@/components/NextDays.vue";
         data() {
             return {
                 city:'Košice',
+                lon:'',
+                lat:'',
+                results:'',
+                dayinfo:''
             }
         },
         components: {
@@ -30,9 +34,16 @@ import NextDays from "@/components/NextDays.vue";
         methods: {
            async GetCurrentWeather() {
                try{
-                   let response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.city}&appid=37fa2633ce3326fbb19b469d4f34d00e`)
+                   let response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.city}&units=metric&appid=37fa2633ce3326fbb19b469d4f34d00e`)
                    let data = await response.json()
+                   this.dayinfo = data.city
                    console.log(data);
+                   this.lon = data.city.coord.lon
+                   this.lat = data.city.coord.lat
+                   let dailyresponse = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.lat}&lon=${this.lon}&units=metric&exclude=minutely,hourly,alerts&appid=37fa2633ce3326fbb19b469d4f34d00e`)
+                   let dailydata = await dailyresponse.json()
+                   this.results = dailydata.current
+                   console.log(dailydata);
                    
                 }
                 catch (error) {
@@ -41,19 +52,24 @@ import NextDays from "@/components/NextDays.vue";
                 
             },
 
+            ChangeCity(data){
+                this.city = data
+                this.GetCurrentWeather()
+            
+            }
+
         },
     }
 </script>
 
 <style lang="scss" scoped>
 
-@function rem($size, $context: 16) {
-	@return ($size / $context) + rem;
-}
+
 
 .container{
     min-width: rem(375);
     min-height: rem(812);
+    position: relative;
     // border: 1px solid black;
 
 }

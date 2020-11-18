@@ -1,11 +1,11 @@
 <template>
-    <div class="weather-info">
+    <div v-if="daily" class="weather-info">
         <div class="current flex">
             <div class="weather-icon ">
-                <img :src="require('@/assets/demoicon.svg')" alt="logo">
-                <h4>Sunny</h4>
+                <img :src="require('@/assets/icons/sunset.svg')" alt="logo">
+                <h4 class="capitalize">{{weather.description}}</h4>
             </div>
-            <div class="weather-temp">33</div>
+            <div class="weather-temp"> {{weather.temp}} </div>
             <div class="weather-temp-range">
                 <div class="max">30C</div>
                 <div class="min">20C</div>
@@ -14,33 +14,33 @@
 
         <div class="details flex">
             <div class="humidity flex-item">
-                <img :src="require('@/assets/demoicon.svg')" alt="logo">
-                <h4>49%</h4>
+                <img :src="require('@/assets/icons/humidity.svg')" alt="logo">
+                <h4> {{weather.humidity}}% </h4>
                 <p>Humidity</p>
             </div>
             <div class="pressure flex-item">
-                <img :src="require('@/assets/demoicon.svg')" alt="logo">
-                <h4>1000Mbar</h4>
+                <img :src="require('@/assets/icons/barometer.svg')" alt="logo">
+                <h4> {{weather.pressure}}mBar </h4>
                 <p>Pressure</p>
             </div>
             <div class="wind flex-item">
-                <img :src="require('@/assets/demoicon.svg')" alt="logo">
-                <h4>23km/h</h4>
+                <img :src="require('@/assets/icons/wind.svg')" alt="logo">
+                <h4> {{weather.wind}}km/h </h4>
                 <p>Wind</p>
             </div>
             <div class="sunrise flex-item">
-                <img :src="require('@/assets/demoicon.svg')" alt="logo">
-                <h4>49%</h4>
+                <img :src="require('@/assets/icons/sunrise.svg')" alt="logo">
+                <h4> {{hoursFormat(weather.sunrise)}} </h4>
                 <p>Sunrise</p>
             </div>
             <div class="sunset flex-item">
-                <img :src="require('@/assets/demoicon.svg')" alt="logo">
-                <h4>1000Mbar</h4>
+                <img :src="require('@/assets/icons/sunset.svg')" alt="logo">
+                <h4> {{hoursFormat(weather.sunset)}} </h4>
                 <p>Sunset</p>
             </div>
             <div class="daytime flex-item">
-                <img :src="require('@/assets/demoicon.svg')" alt="logo">
-                <h4>23km/h</h4>
+                <img :src="require('@/assets/icons/daytime.svg')" alt="logo">
+                <h4> {{hoursFormat(weather.sunset,weather.sunrise)}} </h4>
                 <p>Daytime</p>
             </div>
         </div>
@@ -53,6 +53,33 @@
         data() {
             return {
                 
+            }
+        },
+        props: ['daily'],
+        methods: {
+            hoursFormat(timestamp,optionaltimestamp = 0){
+                let date = new Date((timestamp - optionaltimestamp) * 1000);
+                let hours =date.getHours();
+                let mins =('0'+date.getMinutes()).slice(-2);
+                let time = hours+':'+mins;
+                
+                return time;
+            },
+        },
+        computed: {
+            weather() {
+                return {
+                    description : this.daily.weather[0].main,
+                    temp : Math.round(this.daily.temp ),
+                    humidity : this.daily.humidity,
+                    pressure : this.daily.pressure,
+                    wind : this.daily.wind_speed,
+                    sunrise : this.daily.sunrise,
+                    sunset : this.daily.sunset,
+
+                } 
+                
+               
             }
         },
     }
@@ -87,10 +114,21 @@
     }
 
     .weather-temp{
-        
+            position: relative;
             font-size: em(64);
             font-weight: 300;
         
+        &::before{
+            position: absolute;
+            content: '';
+            width: 26px;
+            height: 26px;
+            top: 15px;
+            right: 5px;
+            background: url(../assets/icons/celsium.svg);
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
         
     }
     .weather-temp-range{
