@@ -1,27 +1,24 @@
 <template>
 <div>
-    <div class="city-info">
+    <div v-if="info" class="city-info">
         <div class="day-info"> <p> {{timeFormat(info.sunrise)}} | {{time}} </p> </div>
         <div @click="toggleSearch()" class="city-name">{{info.name}},{{info.country}}</div>
     </div>
-    <div v-if="show" v class="search-city">
-        <div class="search-location">Location</div>
-        <div class="search-input">
-            <input type="text" placeholder="Search city...">
+    <transition name="fade">
+        <div v-if="show" class="search-city">
+            <div class="search-location">Location</div>
+            <div class="search-input">
+                <input ref="input" v-model="searchquery" type="text" placeholder="Search city...">
+            </div>
+            <div class="suggested-cities">
+                <ul>
+                    <li>
+                        <a @click="citySearch(city)" href="#" v-for="(city,index) in FilterCities" :key="index+1">{{ city }}</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="suggested-cities">
-            <ul>
-                <li @click="citySearch">
-                    <a href="#">Bratislava</a>
-                    <a href="#">Humenné</a>
-                    <a href="#">Koromľa</a>
-                    <a href="#">Košice</a>
-                    <a href="#">Michalovce</a>
-                    <a href="#">Sobrance</a>
-                </li>
-            </ul>
-        </div>
-    </div>
+    </transition>
 </div>
 
 </template>
@@ -33,14 +30,39 @@ import { setInterval } from 'timers';
             return {
                 time:'',
                 show:false,
+                cities:[],
+                searchquery:'',
             }
         },
+        created () {
+            this.GetSlovakiaCities()   
+            
+                   
+        },
         updated () {
+            if(this.show){
+                this.$refs.input.focus()
+            }
             this.currentTime()
-            setInterval(this.currentTime,10000);
+            setInterval(this.currentTime,10000)
         },
         props: ['info'],
         methods: {
+            async GetSlovakiaCities(){
+                //population >1000//
+                try{
+                    let response = await fetch(`https://public.opendatasoft.com/api/records/1.0/search/?dataset=geonames-all-cities-with-a-population-1000&q=slovakia&rows=160&facet=timezone&facet=country&exclude.name=Bratislava+-+Vajnory`)
+                    let data = await response.json()
+                    data.records.map(city => {
+                        this.cities.push(city.fields.name)
+                    });
+                    
+                }
+                catch(error){
+                    console.log(error);
+                    
+                }
+            },
             timeFormat(timestamp){
                 function dayOfWeekAsString(dayIndex) {
                     return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][dayIndex] || '';
@@ -65,10 +87,27 @@ import { setInterval } from 'timers';
             toggleSearch(){
                 this.show = !this.show
             },
-            citySearch(event){
-                this.$emit('city',event.target.textContent)
+            citySearch(city){
+                this.$emit('city',city.split(' ').join('+'))
+                this.$root.$emit('loader',true)
                 this.show = false
+                this.searchquery = ''
             },
+        },
+        computed: {
+            FilterCities() {
+                // normalize = get rid of the diacritics  //
+                let filterArray = this.cities
+                    .filter(city => city.normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "").toLowerCase()
+                    .includes(this.searchquery.normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "").toLowerCase())) 
+
+                return  [...new Set(filterArray.sort())]
+
+               
+                
+            }
         },
 
     }
@@ -78,7 +117,6 @@ import { setInterval } from 'timers';
 
 .city-info{
     width: 100%;
-    // padding: 0.5em 1em;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -106,7 +144,7 @@ import { setInterval } from 'timers';
             width: 15px;
             height: 15px;
             top: 12px;
-            right: 15px;
+            right: 10px;
             background: url(../assets/icons/pin1.svg);
             background-repeat: no-repeat;
             background-size: contain;
@@ -119,7 +157,7 @@ import { setInterval } from 'timers';
     top: 28px;
     left: 0;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     background: $bg-main;
     border-radius: 25px 25px 0 0;
     box-shadow: 0px -16px 40px rgba(0, 0, 0, 0.2);
@@ -165,6 +203,7 @@ import { setInterval } from 'timers';
         ul{
             display: flex;
             justify-content: center;
+            padding: 20px 0;
         }
         li{
             display: flex;
@@ -173,7 +212,7 @@ import { setInterval } from 'timers';
         a{
             text-decoration: none;
             color: $color-medium;
-            margin: 5px 0;
+            margin: 6px 0;
             font-weight: 400;
         }
     }

@@ -4,8 +4,9 @@
         <div class="content">
             <city-info @city="ChangeCity" :info="dayinfo"/>
             <weather-info :daily="results"/>
-            <next-days/>
+            <next-days :next="results"/>
         </div>
+        <loader-screen v-if="loader" />
     </main>
 </template>
 
@@ -13,26 +14,38 @@
 import CityInfo from "@/components/CityInfo.vue";
 import WeatherInfo from "@/components/WeatherInfo.vue";
 import NextDays from "@/components/NextDays.vue";
+import LoaderScreen from "@/components/LoaderScreen.vue";
     export default {
         data() {
             return {
                 city:'Košice',
                 lon:'',
                 lat:'',
+                dayinfo:'',
                 results:'',
-                dayinfo:''
+                minmax:{},
+                loader:false,
+                
+
             }
         },
         components: {
             CityInfo,
             WeatherInfo,
             NextDays,
+            LoaderScreen
         },
         created () {
-            this.GetCurrentWeather();
+            this.GetCurrentWeather()
+        },
+                mounted () {
+            this.$root.$on('loader',  data => {
+                this.loader = data
+            })
         },
         methods: {
            async GetCurrentWeather() {
+               this.loader = true
                try{
                    let response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.city}&units=metric&appid=37fa2633ce3326fbb19b469d4f34d00e`)
                    let data = await response.json()
@@ -42,8 +55,9 @@ import NextDays from "@/components/NextDays.vue";
                    this.lat = data.city.coord.lat
                    let dailyresponse = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.lat}&lon=${this.lon}&units=metric&exclude=minutely,hourly,alerts&appid=37fa2633ce3326fbb19b469d4f34d00e`)
                    let dailydata = await dailyresponse.json()
-                   this.results = dailydata.current
+                   this.results = dailydata
                    console.log(dailydata);
+                   this.loader = false
                    
                 }
                 catch (error) {
@@ -51,10 +65,10 @@ import NextDays from "@/components/NextDays.vue";
                 }
                 
             },
-
             ChangeCity(data){
                 this.city = data
                 this.GetCurrentWeather()
+
             
             }
 
@@ -70,7 +84,8 @@ import NextDays from "@/components/NextDays.vue";
     min-width: rem(375);
     min-height: rem(812);
     position: relative;
-    // border: 1px solid black;
+    overflow: scroll;
+    overflow-x: hidden;
 
 }
 

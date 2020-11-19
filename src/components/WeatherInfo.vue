@@ -2,13 +2,13 @@
     <div v-if="daily" class="weather-info">
         <div class="current flex">
             <div class="weather-icon ">
-                <img :src="require('@/assets/icons/sunset.svg')" alt="logo">
+                <img :src="require(`@/assets/icons/${weather.icon}.svg`)" alt="logo">
                 <h4 class="capitalize">{{weather.description}}</h4>
             </div>
             <div class="weather-temp"> {{weather.temp}} </div>
             <div class="weather-temp-range">
-                <div class="max">30C</div>
-                <div class="min">20C</div>
+                <div class="max">{{weather.max}}</div>
+                <div class="min">{{weather.min}}</div>
             </div>
         </div>
 
@@ -69,13 +69,16 @@
         computed: {
             weather() {
                 return {
-                    description : this.daily.weather[0].main,
-                    temp : Math.round(this.daily.temp ),
-                    humidity : this.daily.humidity,
-                    pressure : this.daily.pressure,
-                    wind : this.daily.wind_speed,
-                    sunrise : this.daily.sunrise,
-                    sunset : this.daily.sunset,
+                    description : this.daily.current.weather[0].main,
+                    temp : Math.round(this.daily.current.temp ),
+                    humidity : this.daily.current.humidity,
+                    pressure : this.daily.current.pressure,
+                    wind : this.daily.current.wind_speed,
+                    sunrise : this.daily.current.sunrise,
+                    sunset : this.daily.current.sunset,
+                    icon : this.daily.current.weather[0].icon,
+                    max: Math.round(this.daily.daily[0].temp.max),
+                    min: Math.round(this.daily.daily[0].temp.min),
 
                 } 
                 
@@ -106,6 +109,10 @@
     .weather-icon{
         display: flex;
         flex-direction: column;
+        
+        img{
+            width: 40px;
+        }
 
         h4{
             font-size: em(18);
@@ -125,7 +132,7 @@
             height: 26px;
             top: 15px;
             right: 5px;
-            background: url(../assets/icons/celsium.svg);
+            background: url(../assets/icons/celsiumlite.svg);
             background-repeat: no-repeat;
             background-size: contain;
         }
@@ -133,9 +140,44 @@
     }
     .weather-temp-range{
         .max,.min{
+            position: relative;
             font-size: em(14);
             font-weight: 300;
             color: $color-light;
+
+            &::before{
+                position: absolute;
+                content: '';
+                width: 12px;
+                height: 12px;
+                top: 3px;
+                right: -12px;
+                background: url(../assets/icons/celsiumlite.svg);
+                background-repeat: no-repeat;
+                background-size: contain;
+        }
+        }
+        .max::after{
+                position: absolute;
+                content: '';
+                width: 6px;
+                height: 6px;
+                top: 4px;
+                right: -20px;
+                background: url(../assets/icons/vectormax.svg);
+                background-repeat: no-repeat;
+                background-size: contain;
+        }
+        .min::after{
+                position: absolute;
+                content: '';
+                width: 6px;
+                height: 6px;
+                bottom: 4px;
+                right: -20px;
+                background: url(../assets/icons/vectormin.svg);
+                background-repeat: no-repeat;
+                background-size: contain;
         }
         
     }
