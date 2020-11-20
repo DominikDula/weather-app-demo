@@ -110,7 +110,7 @@
                 content: '';
                 width: 7px;
                 height: 7px;
-                bottom: 0;
+                bottom: 1px;
                 right: -8px;
                 background: url(../assets/icons/celsiumlite.svg);
                 background-repeat: no-repeat;
