@@ -40,7 +40,7 @@
             </div>
             <div class="daytime flex-item">
                 <img :src="require('@/assets/icons/daytime.svg')" alt="logo">
-                <h4> {{hoursFormat(weather.sunset,weather.sunrise)}} </h4>
+                <h4> {{dayTime(weather.sunset,weather.sunrise)}} </h4>
                 <p>Daytime</p>
             </div>
         </div>
@@ -57,14 +57,22 @@
         },
         props: ['daily'],
         methods: {
-            hoursFormat(timestamp,optionaltimestamp = 0){
-                let date = new Date((timestamp - optionaltimestamp) * 1000);
+            hoursFormat(timestamp){
+                let date = new Date(timestamp  * 1000);
                 let hours =date.getHours();
                 let mins =('0'+date.getMinutes()).slice(-2);
                 let time = hours+':'+mins;
                 
                 return time;
             },
+            dayTime(sunset,sunrise){
+                let date = new Date((sunset - sunrise) * 1000);
+                let hours =date.getHours();
+                let mins =('0'+date.getMinutes()).slice(-2);
+                let time = hours +'h'+ ' '+ mins + 'm';
+                
+                return time;
+            }
         },
         computed: {
             weather() {

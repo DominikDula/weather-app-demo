@@ -2,7 +2,7 @@
 <div>
     <div v-if="info" class="city-info">
         <div class="day-info"> <p> {{timeFormat(info.sunrise)}} | {{time}} </p> </div>
-        <div @click="toggleSearch()" class="city-name">{{info.name}},{{info.country}}</div>
+        <div @click="toggleSearch()" class="city-name"><p>{{info.name}},{{info.country}}</p></div>
     </div>
     <transition name="fade">
         <div v-if="show" class="search-city">
@@ -179,11 +179,16 @@ import { setInterval } from 'timers';
         border: none;
         outline: none;
         background: $bg-search;
+        color: $color-dark;
         border-radius: 4px;
         text-indent: 1.5em;
         font-weight: 500;
-        font-style: italic;
         margin: 0 0px 2em;
+        font-size: em(18);
+        }
+
+        input::placeholder{
+            font-style: italic;
         }
 
         &::before{
@@ -216,6 +221,16 @@ import { setInterval } from 'timers';
             font-weight: 400;
         }
     }
+}
+
+@media (max-width: 410px){
+.city-info  {
+    .city-name{
+            p{
+                font-size: em(14);
+            }
+        }
+    } 
 }
 
 </style>

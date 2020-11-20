@@ -20,7 +20,7 @@
 .spin{
     width: 40px;
     height: 40px;
-    position: absolute;
+    position: fixed;
     transform: translate(-50%,-50%);
     top: 20%;
     left: 50%;

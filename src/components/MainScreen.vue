@@ -93,7 +93,6 @@ import LoaderScreen from "@/components/LoaderScreen.vue";
     width: 100%;
     height: rem(300);
     background-image: url(../assets/background.png);
-    background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
 }

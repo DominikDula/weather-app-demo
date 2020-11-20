@@ -7,12 +7,6 @@
     box-sizing: border-box;
 }
 
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s;
-  }
-  .fade-enter, .fade-leave-to {
-    opacity: 0;
-  }
 
 html{
     font-size: 100%;
@@ -29,6 +23,16 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@media (max-width: 768px){
+    body{
+        background: $bg-main;
+    }
+    #app{
+        display: block;
+        height: 100%;
+    }
 }
 
 //Global Classes
@@ -53,3 +57,12 @@ body{
 .capitalize{
     text-transform: capitalize;
 }
+
+
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
