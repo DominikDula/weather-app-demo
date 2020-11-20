@@ -2,7 +2,7 @@
     <div v-if="daily" class="weather-info">
         <div class="current flex">
             <div class="weather-icon ">
-                <img :src="require(`@/assets/icons/${weather.icon}.svg`)" alt="logo">
+                <img :src="require(`@/assets/icons/${weather.icon}.svg`)" alt="weather-icon">
                 <h4 class="capitalize">{{weather.description}}</h4>
             </div>
             <div class="weather-temp"> {{weather.temp}} </div>
@@ -14,32 +14,32 @@
 
         <div class="details flex">
             <div class="humidity flex-item">
-                <img :src="require('@/assets/icons/humidity.svg')" alt="logo">
+                <img :src="require('@/assets/icons/humidity.svg')" alt="humidity-icon">
                 <h4> {{weather.humidity}}% </h4>
                 <p>Humidity</p>
             </div>
             <div class="pressure flex-item">
-                <img :src="require('@/assets/icons/barometer.svg')" alt="logo">
+                <img :src="require('@/assets/icons/barometer.svg')" alt="pressure-icon">
                 <h4> {{weather.pressure}}mBar </h4>
                 <p>Pressure</p>
             </div>
             <div class="wind flex-item">
-                <img :src="require('@/assets/icons/wind.svg')" alt="logo">
+                <img :src="require('@/assets/icons/wind.svg')" alt="wind-icon">
                 <h4> {{weather.wind}}km/h </h4>
                 <p>Wind</p>
             </div>
             <div class="sunrise flex-item">
-                <img :src="require('@/assets/icons/sunrise.svg')" alt="logo">
+                <img :src="require('@/assets/icons/sunrise.svg')" alt="sunrise-icon">
                 <h4> {{hoursFormat(weather.sunrise)}} </h4>
                 <p>Sunrise</p>
             </div>
             <div class="sunset flex-item">
-                <img :src="require('@/assets/icons/sunset.svg')" alt="logo">
+                <img :src="require('@/assets/icons/sunset.svg')" alt="sunset-icon">
                 <h4> {{hoursFormat(weather.sunset)}} </h4>
                 <p>Sunset</p>
             </div>
             <div class="daytime flex-item">
-                <img :src="require('@/assets/icons/daytime.svg')" alt="logo">
+                <img :src="require('@/assets/icons/daytime.svg')" alt="daytime-icon">
                 <h4> {{dayTime(weather.sunset,weather.sunrise)}} </h4>
                 <p>Daytime</p>
             </div>
@@ -70,7 +70,6 @@
                 let hours =date.getHours();
                 let mins =('0'+date.getMinutes()).slice(-2);
                 let time = hours +'h'+ ' '+ mins + 'm';
-                
                 return time;
             }
         },

@@ -2,10 +2,11 @@
 <div>
     <div v-if="info" class="city-info">
         <div class="day-info"> <p> {{timeFormat(info.sunrise)}} | {{time}} </p> </div>
-        <div @click="toggleSearch()" class="city-name"><p>{{info.name}},{{info.country}}</p></div>
+        <div @click="toggleSearch()" class="city-name"><p>{{info.name.substring(0, 11)}},{{info.country}}</p></div>
     </div>
     <transition name="fade">
         <div v-if="show" class="search-city">
+            <button @click="toggleSearch()">X</button>
             <div class="search-location">Location</div>
             <div class="search-input">
                 <input ref="input" v-model="searchquery" type="text" placeholder="Search city...">
@@ -125,13 +126,17 @@ import { setInterval } from 'timers';
         font-size: em(14);
         color: $color-very-light;
         font-weight: 400;
-        padding: 0.7em 1em;
+        padding: 0.7em 0em 0.7em 1em;
         width: 60%;
+
+        p{
+            margin-left: 2px;
+        }
     }
     .city-name{
         position: relative;
         font-weight: 500;
-        padding: 0.7em 1em;
+        padding: 0.7em 0em 0.7em 0.5em;
         width: 40%;
         color: $color-city;
         background: rgba(13, 159, 234, 0.08);
@@ -162,6 +167,19 @@ import { setInterval } from 'timers';
     border-radius: 25px 25px 0 0;
     box-shadow: 0px -16px 40px rgba(0, 0, 0, 0.2);
     z-index: 1;
+
+    button{
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        border: none;
+        outline: none;
+        width: 25px;
+        height: 25px;
+        font-weight: 600;
+        border-radius: 50%;
+        cursor: pointer;
+    }
 
     .search-location{
         display: flex;
@@ -223,14 +241,5 @@ import { setInterval } from 'timers';
     }
 }
 
-@media (max-width: 410px){
-.city-info  {
-    .city-name{
-            p{
-                font-size: em(14);
-            }
-        }
-    } 
-}
 
 </style>

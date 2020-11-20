@@ -1,7 +1,7 @@
 <template>
     <div v-if="next" class="next-days flex">
         <div class="daily flex-item">
-            <img :src="require(`@/assets/icons/${nextday.day1.icon}.svg`)" alt="logo">
+            <img :src="require(`@/assets/icons/${nextday.day1.icon}.svg`)" alt="nextday-icon">
             <h4>{{timeFormat(nextday.day1.day)}}</h4>
             <div class="min-max">
                 <div class="next-max">{{nextday.day1.max}}</div> 
@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="daily flex-item">
-            <img :src="require(`@/assets/icons/${nextday.day2.icon}.svg`)" alt="logo">
+            <img :src="require(`@/assets/icons/${nextday.day2.icon}.svg`)" alt="nextday-icon">
             <h4>{{timeFormat(nextday.day2.day)}}</h4>
             <div class="min-max">
                 <div class="next-max">{{nextday.day2.max}}</div> 
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="daily flex-item">
-            <img :src="require(`@/assets/icons/${nextday.day3.icon}.svg`)" alt="logo">
+            <img :src="require(`@/assets/icons/${nextday.day3.icon}.svg`)" alt="nextday-icon">
             <h4>{{timeFormat(nextday.day3.day)}}</h4>
             <div class="min-max">
                 <div class="next-max">{{nextday.day3.max}}</div> 
@@ -110,7 +110,7 @@
                 content: '';
                 width: 7px;
                 height: 7px;
-                top: 1.5px;
+                bottom: 0;
                 right: -8px;
                 background: url(../assets/icons/celsiumlite.svg);
                 background-repeat: no-repeat;

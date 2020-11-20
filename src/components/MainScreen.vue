@@ -23,7 +23,6 @@ import LoaderScreen from "@/components/LoaderScreen.vue";
                 lat:'',
                 dayinfo:'',
                 results:'',
-                minmax:{},
                 loader:false,
                 
 
@@ -50,13 +49,12 @@ import LoaderScreen from "@/components/LoaderScreen.vue";
                    let response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.city}&units=metric&appid=37fa2633ce3326fbb19b469d4f34d00e`)
                    let data = await response.json()
                    this.dayinfo = data.city
-                   console.log(data);
                    this.lon = data.city.coord.lon
                    this.lat = data.city.coord.lat
+
                    let dailyresponse = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.lat}&lon=${this.lon}&units=metric&exclude=minutely,hourly,alerts&appid=37fa2633ce3326fbb19b469d4f34d00e`)
                    let dailydata = await dailyresponse.json()
                    this.results = dailydata
-                   console.log(dailydata);
                    this.loader = false
                    
                 }
