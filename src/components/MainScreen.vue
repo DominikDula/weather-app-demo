@@ -37,9 +37,9 @@ import LoaderScreen from "@/components/LoaderScreen.vue";
         created () {
             this.GetCurrentWeather()
         },
-                mounted () {
+        mounted () {
             this.$root.$on('loader',  data => {
-                this.loader = data
+            this.loader = data
             })
         },
         methods: {
