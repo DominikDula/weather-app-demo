@@ -80,7 +80,7 @@
                     temp : Math.round(this.daily.current.temp ),
                     humidity : this.daily.current.humidity,
                     pressure : this.daily.current.pressure,
-                    wind : this.daily.current.wind_speed,
+                    wind : (this.daily.current.wind_speed * 3.6).toFixed(),
                     sunrise : this.daily.current.sunrise,
                     sunset : this.daily.current.sunset,
                     icon : this.daily.current.weather[0].icon,
